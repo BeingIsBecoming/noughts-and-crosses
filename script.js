@@ -1,38 +1,40 @@
-// Noughts & Crosses (Tic Tac Toe)
+// Noughts & Crosses
 
-const gameBoard = (function (){
+// Game Board Module
+const gameBoard = (() => {
     const boardArray = 
     [   "X","X","X",
         "X","O","O",
-        "O","O","X" ];
+        "O","O","X"   ];
     const getBoard = () => boardArray;
     return {
         getBoard
     };
 })(); 
 
-// console.log(gameBoard.getBoard());
+// Player Factory
+function createPlayer(name, marker) {
+    return {name,marker};
+}
 
-const winArray = [
-[0,1,2], [3,4,5], [6,7,8],
-[0,3,6], [1,4,7], [2,5,8],
-[0,4,8], [2,4,6]
-];
+const player1 = createPlayer("Matt","X");
+const player2 = createPlayer("Kristina", "O");
 
-function gameEnd(boardArray) {
-    for (const [a, b, c,] of winArray) {
-        if (boardArray[a] && 
-        boardArray[a] === boardArray[b] &&
-        boardArray[b] === boardArray[c]) {
-            return boardArray[a];
+// Game Logic
+function gameEnd(board) {
+    const winArray = [
+    [0,1,2], [3,4,5], [6,7,8],
+    [0,3,6], [1,4,7], [2,5,8],
+    [0,4,8], [2,4,6]
+    ];
+    for (const [a, b, c] of winArray) {
+        if ( board[a] &&
+        board[a] === board[b] &&
+        board[b] === board[c]) {
+            return board[a];
         }
     }
+    return null;
 }
 const result = gameEnd(gameBoard.getBoard());
 console.log(`${result} wins!!!`);
-
-
-// const players = (function (){
-// });
-// const gameController = (function (){
-// });
