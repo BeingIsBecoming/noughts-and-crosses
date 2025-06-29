@@ -1,7 +1,7 @@
 // Game Board Module
 const gameBoard = (() => {
     const boardArray = 
-    [   "X","X","X",
+    [   "O","X","X",
         "X","O","O",
         "O","O","X"   ];
     const getBoard = () => boardArray;
@@ -47,11 +47,16 @@ function printBoard() {
   ${cell[6]} | ${cell[7]} | ${cell[8]}
   `);
 }
-
 printBoard();
 
 // Winning Player
-const winner = result === player1.marker ? 
-player1.name : player2.name;
-
-console.log(`${winner} wins!`);
+const winner = () => {
+     if (result === player1.marker) {
+        console.log(`${player1.name} wins!`);
+    } else if (result === player2.marker) {
+        console.log(`${player2.name} wins!`);
+    } else {
+        console.log("Draw!");
+    }
+}
+winner();
