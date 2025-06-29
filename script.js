@@ -1,11 +1,9 @@
-// Noughts & Crosses
-
 // Game Board Module
 const gameBoard = (() => {
     const boardArray = 
-    [   "X","X","X",
+    [   "X","O","X",
         "X","O","O",
-        "O","O","X"   ];
+        "X","O","X"   ];
     const getBoard = () => boardArray;
     return {
         getBoard
@@ -16,7 +14,6 @@ const gameBoard = (() => {
 function createPlayer(name, marker) {
     return {name,marker};
 }
-
 const player1 = createPlayer("Matt","X");
 const player2 = createPlayer("Kristina", "O");
 
@@ -36,5 +33,15 @@ function gameEnd(board) {
     }
     return null;
 }
+
 const result = gameEnd(gameBoard.getBoard());
-console.log(`${result} wins!!!`);
+
+// Winning Player
+const printWinner = () => {
+    if (result === player1.marker){
+    return player1.name;
+    } else {
+    return player2.name;
+    }
+}
+console.log(`${printWinner()} wins!`);
