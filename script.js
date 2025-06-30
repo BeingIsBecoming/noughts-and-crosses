@@ -1,7 +1,7 @@
 // Game Board Module
 const gameBoard = (() => {
     const boardArray = 
-    [   "O","X","X",
+    [   "X","X","X",
         "X","O","O",
         "O","O","X"   ];
     const getBoard = () => boardArray;
@@ -18,7 +18,7 @@ const player1 = createPlayer("Matt","X");
 const player2 = createPlayer("Kristina", "O");
 
 // Game Logic
-function gameEnd(board) {
+function winCheck(board) {
     const winArray = [
     [0,1,2], [3,4,5], [6,7,8],
     [0,3,6], [1,4,7], [2,5,8],
@@ -34,7 +34,7 @@ function gameEnd(board) {
     return null;
 }
 
-const result = gameEnd(gameBoard.getBoard());
+const result = winCheck(gameBoard.getBoard());
 
 // Display Controller
 function printBoard() {
@@ -60,3 +60,16 @@ const winner = () => {
     }
 }
 winner();
+
+// Game Controller
+const gameController = (() => {
+    let currentPlayer = player1;
+    let gameOver = false;
+
+const switchPlayer = () => {
+   currentPlayer = 
+   currentPlayer === player1 ? player2 : player1;
+   console.log(`It's ${currentPlayer.name}'s turn`);
+}
+
+})();
