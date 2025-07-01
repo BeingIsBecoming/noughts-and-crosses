@@ -1,4 +1,4 @@
-// Game Board Module
+// Game Board IIFE Module
 const gameBoard = (() => {
     const boardArray = 
     [   "X","X","X",
@@ -12,7 +12,7 @@ const gameBoard = (() => {
 
 // Player Factory
 function createPlayer(name, marker) {
-    return {name,marker};
+    return {name,marker}
 }
 const player1 = createPlayer("Matt","X");
 const player2 = createPlayer("Kristina", "O");
@@ -34,7 +34,36 @@ function winCheck(board) {
     return null;
 }
 
-const result = winCheck(gameBoard.getBoard());
+// Game Controller IIFE Module
+const gameController = (() => {
+    let currentPlayer = player1;
+    let gameOver = false;
+
+    const switchPlayer = () => {
+    currentPlayer = 
+    currentPlayer === player1 ? player2 : player1;
+    console.log(`It's ${currentPlayer.name}'s turn`);
+    };
+
+    const takeTurn = () => {
+    }
+
+    // Check Result
+    const result = winCheck(gameBoard.getBoard());
+     if (result === player1.marker) {
+        console.log(`${player1.name} wins!`);
+        gameOver = true;
+    } else if (result === player2.marker) {
+        console.log(`${player2.name} wins!`);
+        gameOver = true;
+    } else if (!board.includes(null)) {
+        console.log("Draw!");
+        gameOver = true;
+    } else {
+        switchPlayer();
+    }
+
+})();
 
 // Display Controller
 function printBoard() {
@@ -48,28 +77,3 @@ function printBoard() {
   `);
 }
 printBoard();
-
-// Winning Player
-const winner = () => {
-     if (result === player1.marker) {
-        console.log(`${player1.name} wins!`);
-    } else if (result === player2.marker) {
-        console.log(`${player2.name} wins!`);
-    } else {
-        console.log("Draw!");
-    }
-}
-winner();
-
-// Game Controller
-const gameController = (() => {
-    let currentPlayer = player1;
-    let gameOver = false;
-
-const switchPlayer = () => {
-   currentPlayer = 
-   currentPlayer === player1 ? player2 : player1;
-   console.log(`It's ${currentPlayer.name}'s turn`);
-}
-
-})();
