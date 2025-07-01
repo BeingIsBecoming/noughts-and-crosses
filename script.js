@@ -1,12 +1,13 @@
 // Game Board IIFE Module
 const gameBoard = (() => {
     const boardArray = 
-    [   "","X","X",
-        "","O","O",
-        "","O","X"   ];
+    [   "","","",
+        "","","",
+        "","",""   ];
     const getBoard = () => boardArray;
+    const resetBoard = () => boardArray.fill("");
     return {
-        getBoard
+        getBoard, resetBoard
     };
 })(); 
 
@@ -14,8 +15,8 @@ const gameBoard = (() => {
 function createPlayer(name, marker) {
     return {name,marker}
 }
-const player1 = createPlayer("Matt","X");
-const player2 = createPlayer("Kristina", "O");
+let player1;
+let player2;
 
 // Game Logic
 function winCheck(board) {
@@ -37,69 +38,102 @@ function winCheck(board) {
 // Game Controller IIFE Module
 const gameController = (() => {
     let currentPlayer = player1;
+    let firstTurn = true;
     let gameOver = false;
 
     const switchPlayer = () => {
     currentPlayer = 
     currentPlayer === player1 ? player2 : player1;
-    console.log(`It's ${currentPlayer.name}'s turn`);
+    document.querySelector('.turn').textContent = 
+    `${currentPlayer.name}'s turn`;
     };
 
     const takeTurn = (index) => {
-        if(gameOver) {
-            return;
-        }
         const board = gameBoard.getBoard();
-        if(board[index]) {
+        
+        if (gameOver || board[index])
             return;
-        }
+
+        if (firstTurn) {
+            const p1Input = document.getElementById('player1').value;
+            const p2Input = document.getElementById('player2').value;
+            player1 = createPlayer(p1Input || "Player 1", "X");
+            player2 = createPlayer(p2Input || "Player 2", "O");
+            currentPlayer = player1;
+            firstTurn = false;
+    }
+        
         board[index] = currentPlayer.marker;
-        printBoard();
+        updateBoard();
 
          // Check Result
-        const result = winCheck(gameBoard.getBoard());
+        const result = winCheck(board);
         if (result === player1.marker) {
-            console.log(`${player1.name} wins!`);
+            document.querySelector('.win').textContent = 
+            `${player1.name} (${player1.marker}) wins!`;
             gameOver = true;
+            document.querySelector('.turn').textContent = '';
+            showGameOver();
         } else if (result === player2.marker) {
-            console.log(`${player2.name} wins!`);
+            document.querySelector('.win').textContent = 
+            `${player2.name} (${player2.marker}) wins!`;
             gameOver = true;
-        } else if (!board.includes(null)) {
-            console.log("Draw!");
+            document.querySelector('.turn').textContent = '';
+            showGameOver();
+        } else if (!board.includes("")) {
+            document.querySelector('.win').textContent =
+            "Draw!";
             gameOver = true;
+            document.querySelector('.turn').textContent = '';
+            showGameOver();
         } else {
             switchPlayer();
         }
     };
+
+    const resetGame = () => {
+        gameBoard.resetBoard();
+        gameOver = false;
+        firstTurn = true;
+        currentPlayer = player1;
+        updateBoard();
+        hideGameOver();
+    };
+
     return {
-        takeTurn
+        takeTurn, resetGame
     };
 })();
 
 // Event Handlers
 document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('click', (e) => {
-        const index = e.target.dataset.index;
+        const index = parseInt(e.target.dataset.index);
         gameController.takeTurn(index);
-        updateBoard();
     });
 });
 
 function updateBoard() {
     const board = gameBoard.getBoard();
     document.querySelectorAll('.cell').forEach((cell, index) => {
-    cell.textContent = board[index] ? board[index] : '';
+    cell.textContent = board[index] ? board[index] : "";
   });
 }
 
-// Display Controller
-function printBoard() {
-  const cell = gameBoard.getBoard();
-  console.log(`
-  ${cell[0]} | ${cell[1]} | ${cell[2]}
-  ---------
-  ${cell[3]} | ${cell[4]} | ${cell[5]}
-  ---------
-  ${cell[6]} | ${cell[7]} | ${cell[8]}
-  `);
+updateBoard();
+
+// Game Over Messages
+const showGameOver = () => {
+    document.querySelector('.blink').style.display = 'block';
+    document.querySelector('.win').style.display = 'block';
 }
+const hideGameOver = () => {
+    document.querySelector('.blink').style.display = "none";
+    document.querySelector('.win').style.display = "none";
+}
+// Press "Y" to Restart
+document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'y') {
+        gameController.resetGame();
+    }
+});

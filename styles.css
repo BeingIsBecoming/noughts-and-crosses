@@ -72,6 +72,10 @@ h1 {
     animation: blink 3s infinite;
 }
 
+.players {
+   position: relative;
+}
+
 .inputs {
     display: flex;
     margin-top: 20px;
@@ -79,9 +83,8 @@ h1 {
 
 input {
     display: flex;
-    flex-direction:column;
     border: none;
-    width: 120px;
+    width: 125px;
     background: transparent;
     color: orange;
     font-family: 'VT323';
@@ -93,4 +96,8 @@ input {
 
 p {
     margin-top: -20px;
+}
+
+#hidden {
+    display: none;
 }
