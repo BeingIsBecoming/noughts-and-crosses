@@ -1,3 +1,8 @@
+*:focus {
+    outline: none;
+    opacity: 95%;
+}
+
 body {
     background-color: black;
     margin: 0;
@@ -15,7 +20,7 @@ body {
     width: 100vw;
 }
 
-body::after {
+body::before {
     content: "";
     position: fixed; 
     top: 0;
@@ -38,7 +43,6 @@ body::after {
 h1 {
     font-size: 4rem;
     opacity: 95%;
-    margin-top: 100px;
 }
 
 .board {
@@ -68,16 +72,25 @@ h1 {
     animation: blink 3s infinite;
 }
 
+.inputs {
+    display: flex;
+    margin-top: 20px;
+}
+
 input {
     display: flex;
-    flex-direction:row;
-    background-color: orange;
+    flex-direction:column;
+    border: none;
+    width: 120px;
+    background: transparent;
+    color: orange;
+    font-family: 'VT323';
+    font-size: 2rem;
+    text-align: left;
+    text-shadow: 0 0 2px orange;
     opacity: 95%;
-    background: repeating-linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.25),  
-    rgba(0, 0, 0, 0.25) .5px,
-    transparent 1px,
-    transparent 2px
-    );
+}
+
+p {
+    margin-top: -20px;
 }

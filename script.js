@@ -1,9 +1,9 @@
 // Game Board IIFE Module
 const gameBoard = (() => {
     const boardArray = 
-    [   "X","X","X",
-        "X","O","O",
-        "O","O","X"   ];
+    [   "","X","X",
+        "","O","O",
+        "","O","X"   ];
     const getBoard = () => boardArray;
     return {
         getBoard
@@ -45,25 +45,52 @@ const gameController = (() => {
     console.log(`It's ${currentPlayer.name}'s turn`);
     };
 
-    const takeTurn = () => {
-    }
+    const takeTurn = (index) => {
+        if(gameOver) {
+            return;
+        }
+        const board = gameBoard.getBoard();
+        if(board[index]) {
+            return;
+        }
+        board[index] = currentPlayer.marker;
+        printBoard();
 
-    // Check Result
-    const result = winCheck(gameBoard.getBoard());
-     if (result === player1.marker) {
-        console.log(`${player1.name} wins!`);
-        gameOver = true;
-    } else if (result === player2.marker) {
-        console.log(`${player2.name} wins!`);
-        gameOver = true;
-    } else if (!board.includes(null)) {
-        console.log("Draw!");
-        gameOver = true;
-    } else {
-        switchPlayer();
-    }
-
+         // Check Result
+        const result = winCheck(gameBoard.getBoard());
+        if (result === player1.marker) {
+            console.log(`${player1.name} wins!`);
+            gameOver = true;
+        } else if (result === player2.marker) {
+            console.log(`${player2.name} wins!`);
+            gameOver = true;
+        } else if (!board.includes(null)) {
+            console.log("Draw!");
+            gameOver = true;
+        } else {
+            switchPlayer();
+        }
+    };
+    return {
+        takeTurn
+    };
 })();
+
+// Event Handlers
+document.querySelectorAll('.cell').forEach(cell => {
+    cell.addEventListener('click', (e) => {
+        const index = e.target.dataset.index;
+        gameController.takeTurn(index);
+        updateBoard();
+    });
+});
+
+function updateBoard() {
+    const board = gameBoard.getBoard();
+    document.querySelectorAll('.cell').forEach((cell, index) => {
+    cell.textContent = board[index] ? board[index] : '';
+  });
+}
 
 // Display Controller
 function printBoard() {
@@ -76,4 +103,3 @@ function printBoard() {
   ${cell[6]} | ${cell[7]} | ${cell[8]}
   `);
 }
-printBoard();
